@@ -5,6 +5,8 @@
   <p align="center">Devirtualizer for 32bit binaries protected by VMProtect 3.0-3.5.</p>
 </p>
 
+***THIS IS A POC I WROTE FOR SOME CTF CHALLENGES AND FOR LEARNING DONT MESSAGE ME I WONT CRACK UR APP FOR U***
+
 MogVMP lifts code to LLVM using [Remill](https://github.com/lifting-bits/remill) to recover the original semantics behind a virtualized function. Instead of modeling the VM specific handler semantics individually (like in my previous work on [byteshield](https://eversinc33.com/2026/05/07/llvm-devirtualizer)), the whole x86 assembly code of each handler is lifted. Junk code, as well as the virtualization layer,  is subsequently optimized away by LLVMs built-in optimization passes and a custom pass that does aliasing-aware constant propagation and store forwarding over memory allocas.
 
 For recovery of the CFG, the main goal of this project was to have it work fully statically, without needing any opcode traces or merging CFGs from traced runs. Instead, opcode handlers are lifted and optimized incrementally from VMENTER on. After each lifted handler, the next handler materializes as a constant. If it doesn't, VMP is branching: in this case, the two possible targets are extracted and the lifting process is forked. This approach works well on CFGs without jumptables, with a caveat of being rather slow. 
